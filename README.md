@@ -1,1 +1,2 @@
-# projet_snake
+Second Projet d'IN200
+
