@@ -61,7 +61,8 @@ def decors(nomFichier):
     murs =[]
     niveau = open(nomFichier)
     for ligne in niveau:
-        for i in range(20):
+        print(ligne)
+        for i in range(len(ligne)):
             case = ligne[i]
             if case == "X":
                 temp = env_jeu.create_rectangle(x, y, x+40, y+40, fill='black')
