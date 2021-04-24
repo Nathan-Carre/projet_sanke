@@ -1,40 +1,11 @@
-import tkinter as tk 
-import os
-
-#Global state permettant de stoquer les infos du joueur
-state = {
-    "pseudo": "",
-    "score": 20,
-    "niveau": "",
-    "vitesse": "",
-}
-
-def save_score():
-    global state
-    pseudo = state['pseudo']
-    score = state['score']
-    file_path = "./scores/" + pseudo + ".txt"
-    old_scores = ""
-
-    if os.path.exists(file_path):
-        # récupérer le contenue du fichier score
-        f = open(file_path, "r")
-        old_scores = f.read()
-        f.close()
-    elif not os.path.exists("./scores"):
-        # si le dossier score n'existe pas on le crée
-        os.makedirs("./scores")
-
-    # on ajoute le nouveau score en haut du fichier suivi par les anciens
-    # classés du plus récent au plus ancien
-    f = open(file_path, "w")
-    f.write(str(score) + '\n' + old_scores)
-    f.close()
+import tkinter as tk
+import random as rd
 
 def choix_frame(frame):
     frame.tkraise()
 
 def decors(title):
+    global serpent, obstacles, pommes
     choix_frame(frame_canvas)
     snake.geometry('800x600')
     x, y = 0, 0
@@ -43,23 +14,72 @@ def decors(title):
         for i in range(20):
             case = ligne[i]
             if case == "X":
-                env_jeu.create_rectangle(x, y, x+40, y+40, fill='black')
+                obstacle = env_jeu.create_rectangle(x, y, x+40, y+40, fill='black')
+                obstacles.append(obstacle)
             elif case == "P":
-                env_jeu.create_oval(x, y, x+40, y+40, fill='red')
+                pomme = env_jeu.create_oval(x, y, x+40, y+40, fill='red')
+                pommes.append(pomme)
             elif case == "T":
-                env_jeu.create_rectangle(x, y, x+40, y+40, fill='green')
+                tete = env_jeu.create_rectangle(x, y, x+40, y+40, fill='green')
+                serpent.append(tete)
             elif case == "Q":
-                env_jeu.create_rectangle(x, y, x+40, y+40, fill='green')
+                queue = env_jeu.create_rectangle(x, y, x+40, y+40, fill='green')
+                serpent.append(queue)
             x += 40
         x = 0
         y += 40
     niveau.close()
 
 def bienvenue():
-    global state
-    state['pseudo'] = saisir_nom.get() # ('bienvenue '+saisir_nom.get() + ' !')
-    hello_val.set('Bienvenue ' + state['pseudo'] + ' !' )
-    
+    global pseudo
+    pseudo.set('bienvenue '+saisir_nom.get() + ' !')
+
+def gauche(event):
+    global x, y
+    x = -40
+    y = 0
+    mouvement()
+
+def droit(event):
+    global x, y
+    x = 40
+    y = 0
+    mouvement()
+
+def haut(event):
+    global x, y  
+    x = 0
+    y = -40
+    mouvement()
+
+def bas(event):
+    global x, y 
+    x = 0 
+    y = 40
+    mouvement()
+
+def mouvement():
+    global serpent, x, y, obstacles, pommes, score
+    t1, t2, t3, t4 = env_jeu.coords(serpent[0])
+    p1, p2, p3, p4 = env_jeu.coords(pommes[0])
+    tete = env_jeu.create_rectangle(t1+x, t2+y, t3+x, t4+y, fill='green')
+    serpent.insert(0, tete)
+    if (t1 == p1 and t3 == p3 and t2 == p2 and t4 == p4):
+        score += 1
+        p1 = 40 * rd.randint(1,18)
+        p2 = 40 * rd.randint(1, 13)
+        p3 = p1 + 40
+        p4 = p2 + 40
+        po = env_jeu.create_oval(p1, p2, p3, p4, fill='red') # multiple de 40 attention
+        pommes.insert(0, po)       
+    else:
+        if len(pommes) == 1 : 
+            effacer = serpent.pop()
+            env_jeu.delete(effacer)
+        else : 
+            env_jeu.delete(pommes[1])
+            pommes.pop()
+        
     
 snake = tk.Tk()
 snake.title("jeu snake")
@@ -77,7 +97,13 @@ for frame in (frame_menu, frame_niveaux, frame_score, frame_canvas, frame_vitess
     frame.grid(row=0, column=0, sticky="nsew")
 
 choix_frame(frame_menu)
-
+pseudo = tk.StringVar()
+pseudo.set('')
+serpent =[]
+obstacles = []
+pommes = []
+score = 0 
+x, y = -5, 0
 
 ############# menu ############
 titre_menu = tk.Label(frame_menu, text='SNAKE', fg='green', font="Helvetica 26 bold italic")
@@ -94,9 +120,7 @@ saisir_nom = tk.Entry(frame_menu, width=35)
 saisir_nom.place(x=25, y=100)
 ok = tk.Button(frame_menu, text='OK', bg='light gray', fg='green', font="Helvetica 10 bold italic", width=2, command=bienvenue)
 ok.place(x=250, y=95)
-hello_val = tk.StringVar()
-hello_val.set('')
-hello = tk.Label(frame_menu, textvariable=hello_val, fg='green', font="Helvetica 10 bold italic")
+hello = tk.Label(frame_menu, textvariable=pseudo, fg='green', font="Helvetica 10 bold italic")
 hello.place(x=80, y=120)
 
 ######## niveaux ######
@@ -132,5 +156,13 @@ moyen = tk.Button(frame_vitesse, text='moyen', bg='light gray', fg='green', font
 moyen.place(x=100, y=125)
 rapide = tk.Button(frame_vitesse, text='rapide', bg='light gray', fg='green', font="Helvetica 16 bold italic", width=7)
 rapide.place(x=100, y=175)
+
+###### programme ########
+
+snake.bind("<KeyPress-Left>", gauche)
+snake.bind("<KeyPress-Right>", droit)
+snake.bind("<KeyPress-Up>", haut)
+snake.bind("<KeyPress-Down>", bas)
+
 
 snake.mainloop()
