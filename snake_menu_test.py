@@ -1,4 +1,35 @@
 import tkinter as tk 
+import os
+
+#Global state permettant de stoquer les infos du joueur
+state = {
+    "pseudo": "",
+    "score": 20,
+    "niveau": "",
+    "vitesse": "",
+}
+
+def save_score():
+    global state
+    pseudo = state['pseudo']
+    score = state['score']
+    file_path = "./scores/" + pseudo + ".txt"
+    old_scores = ""
+
+    if os.path.exists(file_path):
+        # récupérer le contenue du fichier score
+        f = open(file_path, "r")
+        old_scores = f.read()
+        f.close()
+    elif not os.path.exists("./scores"):
+        # si le dossier score n'existe pas on le crée
+        os.makedirs("./scores")
+
+    # on ajoute le nouveau score en haut du fichier suivi par les anciens
+    # classés du plus récent au plus ancien
+    f = open(file_path, "w")
+    f.write(str(score) + '\n' + old_scores)
+    f.close()
 
 def choix_frame(frame):
     frame.tkraise()
@@ -25,8 +56,10 @@ def decors(title):
     niveau.close()
 
 def bienvenue():
-    global pseudo
-    pseudo.set('bienvenue '+saisir_nom.get() + ' !')
+    global state
+    state['pseudo'] = saisir_nom.get() # ('bienvenue '+saisir_nom.get() + ' !')
+    hello_val.set('Bienvenue ' + state['pseudo'] + ' !' )
+    
     
 snake = tk.Tk()
 snake.title("jeu snake")
@@ -44,8 +77,7 @@ for frame in (frame_menu, frame_niveaux, frame_score, frame_canvas, frame_vitess
     frame.grid(row=0, column=0, sticky="nsew")
 
 choix_frame(frame_menu)
-pseudo = tk.StringVar()
-pseudo.set('')
+
 
 ############# menu ############
 titre_menu = tk.Label(frame_menu, text='SNAKE', fg='green', font="Helvetica 26 bold italic")
@@ -62,7 +94,9 @@ saisir_nom = tk.Entry(frame_menu, width=35)
 saisir_nom.place(x=25, y=100)
 ok = tk.Button(frame_menu, text='OK', bg='light gray', fg='green', font="Helvetica 10 bold italic", width=2, command=bienvenue)
 ok.place(x=250, y=95)
-hello = tk.Label(frame_menu, textvariable=pseudo, fg='green', font="Helvetica 10 bold italic")
+hello_val = tk.StringVar()
+hello_val.set('')
+hello = tk.Label(frame_menu, textvariable=hello_val, fg='green', font="Helvetica 10 bold italic")
 hello.place(x=80, y=120)
 
 ######## niveaux ######
