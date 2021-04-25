@@ -65,7 +65,8 @@ def mouvement():
     tete = env_jeu.create_rectangle(t1+x, t2+y, t3+x, t4+y, fill='green')
     serpent.insert(0, tete)
     if (t1 == p1 and t3 == p3 and t2 == p2 and t4 == p4):
-        score += 1
+        scores += 1
+        env_jeu.delete(pommes[0])
         p1 = 40 * rd.randint(1,18)
         p2 = 40 * rd.randint(1, 13)
         p3 = p1 + 40
