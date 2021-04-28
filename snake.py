@@ -60,8 +60,9 @@ def decors(nomFichier):
     x, y = 0, 0
     murs =[]
     niveau = open(nomFichier)
+    #tailleCase = min(len(niveau[0]), len(niveau))
+    print(type(niveau))
     for ligne in niveau:
-        print(ligne)
         for i in range(len(ligne)):
             case = ligne[i]
             if case == "X":

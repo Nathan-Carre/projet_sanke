@@ -14,7 +14,11 @@ fonteListe = ("Kristen ITC","16")
 couleurFond = "darkgrey"
 couleurBoutonSelect = "green"
 couleurBoutonDefaut = "SystemButtonFace"
-delai = 300
+global delai
+delai = 100
+delaiLent = 200
+delaiMoyen = 150
+delaiRapide = 100
 pommes = []
 
         
@@ -33,24 +37,27 @@ def importerNiveaux():
 
 
 def lent():
+    global delai
     btLent.config(bg=couleurBoutonSelect)
     btMoyen.config(bg=couleurBoutonDefaut)
     btRapide.config(bg=couleurBoutonDefaut)
-    delai = 300
+    delai = delaiLent
 
 
 def moyen():
+    global delai
     btLent.config(bg=couleurBoutonDefaut)
     btMoyen.config(bg=couleurBoutonSelect)
     btRapide.config(bg=couleurBoutonDefaut)
-    delai = 200
+    delai = delaiMoyen
 
 
 def rapide():
+    global delai
     btLent.config(bg=couleurBoutonDefaut)
     btMoyen.config(bg=couleurBoutonDefaut)
     btRapide.config(bg=couleurBoutonSelect)
-    delai = 100
+    delai = delaiRapide
 
 
 def jouer():
@@ -89,8 +96,8 @@ def decors(nomFichier):
 def deplacement_serpent_auto():
     """Déplace le serpent sur le canevas"""
     global tete, queue, murs, pomme, dirX, dirY, serpent, prochaines_coords, coords_murs, delai
+    print(delai)
     coords_murs = []
-    
     prochaines_coords = [serpent[0][0] + dirX * taille_case, serpent[0][1] + dirY * taille_case, 
     serpent[0][2] + dirX * taille_case, serpent[0][3] + dirY * taille_case] 
     for i in murs:
@@ -101,18 +108,16 @@ def deplacement_serpent_auto():
         serpent.remove(serpent[-1])
         env_jeu.coords(tete, serpent[0])
         env_jeu.coords(queue, serpent[-1])
-        #snake.after(delai, deplacement_serpent_auto)
-    else:
-        snake.after_cancel(snake.after(delai, deplacement_serpent))
+        snake.after(delai, deplacement_serpent_auto)
+        #snake.after_cancel(snake.after(delai, deplacement_serpent_auto))
     
-    snake.after(delai, deplacement_serpent_auto)
 
 def deplacement_serpent_up():
     """Déplace le serpent vers le haut sur le canevas"""
     global tete, queue, murs, pomme, dirX, dirY, serpent, prochaines_coords, coords_murs, delai
 
     dirX, dirY = 0, -1 
-    deplacement_serpent_auto()
+    #deplacement_serpent_auto()
 
     
 def deplacement_serpent_down():
@@ -120,21 +125,21 @@ def deplacement_serpent_down():
     global tete, queue, murs, pomme, dirX, dirY, serpent, prochaines_coords, coords_murs, delai
 
     dirX, dirY = 0, 1
-    deplacement_serpent_auto()
+    #deplacement_serpent_auto()
 
 def deplacement_serpent_right():
     """Déplace le serpent vers la droite sur le canevas"""
     global tete, queue, murs, pomme, dirX, dirY, serpent, prochaines_coords, coords_murs, delai
 
     dirX, dirY = 1, 0 
-    deplacement_serpent_auto()
+    #deplacement_serpent_auto()
     
 def deplacement_serpent_left():
     """Déplace le serpent sur le canevas"""
     global tete, queue, murs, pomme, dirX, dirY, serpent, prochaines_coords, coords_murs, delai
 
     dirX, dirY = -1, 0
-    deplacement_serpent_auto()
+    #deplacement_serpent_auto()
 
 
 
