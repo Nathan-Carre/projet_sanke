@@ -21,6 +21,10 @@ delaiMoyen = 250
 delaiRapide = 100
 pommes = []
 murs = []
+
+def replay():
+    env_jeu.delete("all") 
+    jouer()
         
 def importerNiveaux():
     listeFichier = os.listdir()
@@ -67,7 +71,7 @@ def jouer():
     panMenu.destroy()
     deplacement_serpent_auto()
     panJeu.pack()
-    
+
 
 
 
@@ -114,6 +118,7 @@ def deplacement_serpent_auto():
     snake.after(delai, deplacement_serpent_auto)
     #snake.after_cancel(snake.after(delai, deplacement_serpent_auto))
 
+#Ces quatres fonctions permettent le déplacement dans quatres directions du serpent
 
 def deplacement_serpent_up():
     """Déplace le serpent vers le haut sur le canevas"""
@@ -176,7 +181,7 @@ def percuter():
     if serpent[1] in env_jeu.find_overlapping(x_centre, y_centre, x_centre, y_centre) :
         perduhahatnul()
 
-#def replay():  
+    
    
 #def backto():
 
@@ -187,14 +192,15 @@ def perduhahatnul():
     env_jeu.create_text(WIDTH//2, HEIGHT//3, text="PERDU", fill="red", font=('system', '45'))
     env_jeu.create_text(WIDTH//2, HEIGHT//2.25, text="Votre score : "+str(score), fill="white", font=('Lucida Console', '15'))
    
-    replay=tk.Button(menuPerdu, text="Rejouer", fg="white", bg="black", relief="raised", font=("Lucida Console","20"))
+    replay=tk.Button(text="Rejouer", fg="white", bg="black", relief="raised", font=("Lucida Console","20"))
     replay.place(x= WIDTH//2.4,y=HEIGHT//1.7)
 
     
-    backto=tk.Button(menuPerdu, text="Revenir au menu", fg="white", bg="black", relief="raised", font=("Lucida Console","20"))
+    backto=tk.Button(text="Revenir au menu", fg="white", bg="black", relief="raised", font=("Lucida Console","20"))
     backto.place(x= WIDTH//2.9,y=HEIGHT//1.48)
-    sauvegardescore=tk.Button(menuPerdu, text="Sauvegarder votre score", fg="white", bg="black", relief="raised", font=("Lucida Console","20") )
+    sauvegardescore=tk.Button(text="Sauvegarder votre score", fg="white", bg="black", relief="raised", font=("Lucida Console","20") )
     sauvegardescore.place(x= WIDTH//3.9,y=HEIGHT//2)
+    
 
     #rendre les boutons fonctionnels
  
