@@ -8,6 +8,7 @@ HEIGHT = 600
 taille_case = 40
 dirX = -1
 dirY = 0
+pseudo=""
 score = 0
 fonte = ("Kristen ITC","24")
 fonteListe = ("Kristen ITC","16")
@@ -39,6 +40,48 @@ def importerNiveaux():
     listeNiveaux.config(height=len(niveaux))
     return listeNiveaux
 
+def importerScore(pseudo):
+    """Permet d'importer les scores du joeur(en format ".txt") dans le tableau des scores"""
+    print('importerScore')
+    file_path = "./scores/" + pseudo + ".txt"
+    scores = []
+
+    if os.path.exists(file_path):
+        # récupérer le contenue du fichier score
+        f = open(file_path, "r")
+        scores = f.read().split('\n')[:10]
+        f.close()
+
+    for score in scores:
+        if (score !=''):
+            listeScores.insert(tk.END,str(score) + " pts")
+    if len(scores):
+        listeScores.select_set(0)
+    listeScores.config(height=10)
+    
+    return listeScores
+
+def save_score():
+    """Sauvegarde le score du joueur une fois la partie terminée sous /scores/pseudo_du_joueur."""
+    global pseudo, score
+    file_path = "./scores/" + pseudo + ".txt"
+    old_scores = ""
+
+    if os.path.exists(file_path):
+        # récupérer le contenue du fichier score
+        f = open(file_path, "r")
+        old_scores = f.read()
+        f.close()
+    elif not os.path.exists("./scores"):
+        # si le dossier score n'existe pas on le crée
+        os.makedirs("./scores")
+
+    # on ajoute le nouveau score en haut du fichier suivi par les anciens
+    # classés du plus récent au plus ancien
+    f = open(file_path, "w")
+    f.write(str(score) + '\n' + old_scores)
+    f.close()
+
 def lent():
     """Pour de sélectionner dans le menu principale la vitesse (lente) du serpent et donc le niveau de difficulté"""
     global delai
@@ -65,11 +108,21 @@ def rapide():
 
 def jouer():
     """Lance la partie dans une nouvelle fenêtre et suprimme la fenêtre "menu". """
+    global pseudo
+    pseudo = etryPseudo.get()
     nomFichier = listeNiveaux.get(listeNiveaux.curselection())
     panMenu.destroy()
     decors(nomFichier)
     deplacement_serpent_auto()
     panJeu.pack()
+
+def scores():
+    """Lance le tableu des scores et suprimme la fenêtre "menu". """
+    global pseudo
+    pseudo = etryPseudo.get()
+    panMenu.destroy()
+    panScore.pack()
+
 
 def decors(nomFichier):
     """Génération du décor correspondant au niveau pré-sélectionné dans le menu principal"""
@@ -152,8 +205,7 @@ def manger_pomme():
         env_jeu.coords(pomme, x_rd*taille_case, y_rd*taille_case, x_rd*taille_case + taille_case, y_rd*taille_case + taille_case)
         serpent.append(serpent[-1])
         idSerpent.append(env_jeu.create_rectangle(serpent[-1], fill="green"))
-        #score += 1
-        #utiliser cette variable score pour pouvoir Sauvegarder (Rania)
+        score += 1
 
 def percuter():
     """Prend en compte la percussion de la tête avec un autre item du canvas, puis termine la partie ou non selon les règles données dans les consignes."""
@@ -181,6 +233,7 @@ def perduhahatnul():
     backto.place(x= WIDTH//2.9,y=HEIGHT//1.48)
     sauvegardescore=tk.Button(text="Sauvegarder votre score", fg="white", bg="black", relief="raised", font=("Lucida Console","20") )
     sauvegardescore.place(x= WIDTH//3.9,y=HEIGHT//2)
+    save_score()
     #rendre les boutons fonctionnels
 
 ################################################################################################################          
@@ -193,12 +246,16 @@ panMenu = tk.Frame(snake,bg=couleurFond)
 panScore = tk.Frame(snake)
 panJeu = tk.Frame(snake)
 
+
+labelPseudo = tk.Label(panMenu,text="Pseudo",font=fonte,bg=couleurFond)
+etryPseudo = tk.Entry(panMenu, width=15, font=fonte)
+etryPseudo.insert(tk.END,pseudo)
 labelVitesse = tk.Label(panMenu,text="Vitesse",font=fonte,bg=couleurFond)
 btLent = tk.Button(panMenu,text="Lent",font=fonte,command=lent)
 btMoyen = tk.Button(panMenu,text="Moyen",font=fonte,bg=couleurBoutonSelect,command=moyen)
 btRapide = tk.Button(panMenu,text="Rapide",font=fonte,command=rapide)
 btJouer = tk.Button(panMenu,text="Jouer",font=fonte,command=jouer)
-btScore = tk.Button(panMenu,text="Tableau des scores",font=fonte)
+btScore = tk.Button(panMenu,text="Tableau des scores",font=fonte, command=scores)
 panListe = tk.Frame(panMenu)
 labelNiveau = tk.Label(panMenu,text="Niveau",font=fonte,bg=couleurFond)
 barreDefilement = tk.Scrollbar(panListe)
@@ -208,16 +265,40 @@ listeNiveaux.pack(side=tk.LEFT, fill=tk.BOTH)
 barreDefilement.pack(side=tk.RIGHT, fill=tk.BOTH)
 barreDefilement.config(command = listeNiveaux.yview)
 
-labelVitesse.grid(row=0,columnspan=3)
-btLent.grid(row=1,column=0)
-btMoyen.grid(row=1,column=1)
-btRapide.grid(row=1,column=2)
-labelNiveau.grid(row=2,columnspan=3)
-panListe.grid(row=3,columnspan=3)
-btJouer.grid(row=4,columnspan=3)
-btScore.grid(row=5,columnspan=3)
+labelPseudo.grid(row=0,columnspan=3)
+etryPseudo.grid(row=1,columnspan=3)
+labelVitesse.grid(row=2,columnspan=3)
+btLent.grid(row=3,column=0)
+btMoyen.grid(row=3,column=1)
+btRapide.grid(row=3,column=2)
+labelNiveau.grid(row=4,columnspan=3)
+panListe.grid(row=5,columnspan=3)
+btJouer.grid(row=6,columnspan=3)
+btScore.grid(row=7,columnspan=3)
 
 panMenu.pack()
+
+######pannel tableau des scores#########
+
+panScore = tk.Frame(snake, bg=couleurFond)
+
+panListeScore = tk.Frame(panScore)
+labelScore = tk.Label(panScore,text=pseudo + " Votre tableau des scores",font=fonte,bg=couleurFond)
+barreDefilementScore = tk.Scrollbar(panListeScore)
+listeScores = tk.Listbox(panListeScore,font=fonte,selectbackground=couleurBoutonSelect,yscrollcommand=barreDefilementScore.set)
+listeScores.pack(side=tk.LEFT, fill=tk.BOTH)
+barreDefilementScore.pack(side=tk.RIGHT, fill=tk.BOTH)
+barreDefilementScore.config(command = listeScores.yview)
+
+btMenu = tk.Button(panScore,text="Retour au Menu",font=fonte,command=lambda: switchPan(getPanMenu()))
+    
+labelScore.grid(row=0,columnspan=3)   
+panListeScore.grid(row=1,columnspan=3)
+btMenu.grid(row=2,columnspan=3)
+
+importerScore(pseudo) 
+
+
 
 env_jeu = tk.Canvas(panJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
 env_jeu.pack()
