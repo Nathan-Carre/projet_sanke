@@ -191,9 +191,11 @@ def getPanMenu():
     def jouer():
         """Lance la partie dans une nouvelle fenêtre et suprimme la fenêtre "menu". """
         global pseudo, env_jeu, score, idSerpent
+        # on recrée le canvas avec un nouveau pannel jeu
         newPanJeu = getPanJeu()
         env_jeu.destroy()
         env_jeu = tk.Canvas(newPanJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
+        env_jeu.pack()
         
         pseudo = etryPseudo.get()
         nomFichier = listeNiveaux.get(listeNiveaux.curselection())
@@ -204,8 +206,6 @@ def getPanMenu():
         idSerpent = []
         decors(nomFichier)
         deplacement_serpent_auto()
-
-        env_jeu.pack()
         switchPan(newPanJeu)
     
     def scores():
@@ -335,12 +335,16 @@ def getPanPerdu():
     def rejouer():
         """Relance la partie dans une nouvelle fenêtre et suprimme la fenêtre "perdu". """
         global pseudo, env_jeu, score, idSerpent
+
+        # on recrée le canvas avec un nouveau pannel jeu
         newPanJeu = getPanJeu()
         env_jeu.destroy()
         env_jeu = tk.Canvas(newPanJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
+        env_jeu.pack()
         
         pseudo = etryPseudo.get()
         nomFichier = listeNiveaux.get(listeNiveaux.curselection())
+        
         # on remet les variables à leurs valeurs initiale
         dirX = -1
         dirY = 0
@@ -348,8 +352,7 @@ def getPanPerdu():
         idSerpent = []
         decors(nomFichier)
         deplacement_serpent_auto()
-
-        env_jeu.pack()
+        
         switchPan(newPanJeu)
 
 
