@@ -5,7 +5,8 @@ import os
 ################CONSTANTE################################################################
 WIDTH = 800
 HEIGHT = 600
-taille_case = 40
+global taille_case
+taille_case = 0
 dirX = -1
 dirY = 0
 pseudo = ""
@@ -29,25 +30,33 @@ delai = delaiMoyen
 
 def decors(nomFichier):
     """Génération du décor correspondant au niveau pré-sélectionné dans le menu principal"""
-    global murs, pomme, serpent, idSerpent
+    global murs, pomme, serpent, idSerpent, taille_case
     serpent = []
     x, y = 0, 0
     niveau = open(nomFichier)
+    nbCasesY = 0
+    for ligne in niveau:
+        nbCasesY += 1
+        nbCasesX = len(ligne)
+        print(ligne)
+    
+    taille_case = min(WIDTH/nbCasesX,HEIGHT/nbCasesY)
+    print(taille_case)
     for ligne in niveau:
         for i in range(len(ligne)):
             case = ligne[i]
             if case == "X":
-                temp = env_jeu.create_rectangle(x, y, x+40, y+40, fill='black')
+                temp = env_jeu.create_rectangle(x, y, x+taille_case, y+taille_case, fill='black')
                 murs.append(temp)
             elif case == "P":
-                pomme = env_jeu.create_oval(x, y, x+40, y+40, fill='red')
+                pomme = env_jeu.create_oval(x, y, x+taille_case, y+taille_case, fill='red')
             elif case == "T":
-                idSerpent.append(env_jeu.create_rectangle(x, y, x+40, y+40, fill='green'))
+                idSerpent.append(env_jeu.create_rectangle(x, y, x+taille_case, y+taille_case, fill='green'))
             elif case == "Q":
-                idSerpent.append(env_jeu.create_rectangle(x, y, x+40, y+40, fill='green'))
-            x += 40
+                idSerpent.append(env_jeu.create_rectangle(x, y, x+taille_case, y+taille_case, fill='green'))
+            x += taille_case
         x = 0
-        y += 40
+        y += taille_case
     serpent = [env_jeu.coords(idSerpent[0]), env_jeu.coords(idSerpent[-1])]
     niveau.close()
 
