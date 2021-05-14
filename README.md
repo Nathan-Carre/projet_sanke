@@ -10,17 +10,18 @@ Le but de ce projet est de créer un programme fonctionnel pour simuler le jeu "
 
 - La partie s’arrête lorsque la tête du serpent percute un mur ou percute son propre corps.
 
-### Menu Principal:
+
+### I°) Menu Principal:
 
 A compléter
 
 
-### Fenêtre de jeu:
+### II°) Fenêtre de jeu:
 Dès lors que le joueur a appuyé sur le bouton Jouer dans le menu principal, une nouvelle fenêtre Tkinter contenant un canvas s'ouvre pour que le joueur puisse commencer à jouer. Le serpent commence automatiquement à se déplacer dès que la fenêtre de jeu Tkinter c'est ouverte. Il se déplace d'une manière plus au moins rapide en fonction de la vitesse choisie par le joueur dans le menu principal. 
 
 - Tout d'abord, le serpent commence avec une longueur de deux cases, la tête et la queue, quelque soit le "niveau" choisi au préalable.
 - Pour se déplacer, afin d'éviter les murs et manger la pomme sur le terrain, le joueur doit utiliser les flèches du clavier. Les flèches du haut, du bas, de gauche et de droite déplacent le serpent respectivement en haut, en bas, à gauche et à droite. 
 - Si la tête du serpent venait à percuter son propre corps ou un des murs du terrain, la partie est terminée et le joueur a perdu.
 
-### Menu de fin:
+### III°) Menu de fin:
 A compléter
