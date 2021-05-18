@@ -10,6 +10,7 @@ dirX = -1
 dirY = 0
 pseudo = ""
 score = 0
+currentNiveau =""
 fonte = ("Kristen ITC","24")
 fonteListe = ("Kristen ITC","16")
 couleurFond = "darkgrey"
@@ -192,7 +193,7 @@ def getPanMenu():
 
     def jouer():
         """Lance la partie dans une nouvelle fenêtre et suprimme la fenêtre "menu". """
-        global pseudo, env_jeu, score, idSerpent
+        global pseudo, env_jeu, score, idSerpent, dirX, dirY, currentNiveau
         # on recrée le canvas avec un nouveau pannel jeu
         newPanJeu = getPanJeu()
         env_jeu.destroy()
@@ -200,13 +201,13 @@ def getPanMenu():
         env_jeu.pack()
         
         pseudo = etryPseudo.get()
-        nomFichier = listeNiveaux.get(listeNiveaux.curselection())
+        currentNiveau = listeNiveaux.get(listeNiveaux.curselection())
         # on remet les variables à leurs valeurs initiale
         dirX = -1
         dirY = 0
         score = 0
         idSerpent = []
-        decors(nomFichier)
+        decors(currentNiveau)
         deplacement_serpent_auto()
         switchPan(newPanJeu)
     
@@ -336,7 +337,7 @@ def getPanJeu():
 def getPanPerdu():
     def rejouer():
         """Relance la partie dans une nouvelle fenêtre et suprimme la fenêtre "perdu". """
-        global pseudo, env_jeu, score, idSerpent
+        global pseudo, env_jeu, score, idSerpent, currentNiveau, dirX, dirY
 
         # on recrée le canvas avec un nouveau pannel jeu
         newPanJeu = getPanJeu()
@@ -344,15 +345,12 @@ def getPanPerdu():
         env_jeu = tk.Canvas(newPanJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
         env_jeu.pack()
         
-        pseudo = etryPseudo.get()
-        nomFichier = listeNiveaux.get(listeNiveaux.curselection())
-        
         # on remet les variables à leurs valeurs initiale
         dirX = -1
         dirY = 0
         score = 0
         idSerpent = []
-        decors(nomFichier)
+        decors(currentNiveau)
         deplacement_serpent_auto()
         
         switchPan(newPanJeu)
