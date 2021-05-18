@@ -15,13 +15,26 @@ Le but de ce projet est de créer un programme fonctionnel pour simuler le jeu "
 
 A compléter
 
+## II°) Tableau des scores:
+A chaque fin de partie le score du joeur est sauvegarder à l'aide du système de sauvegarde. Afin de pouvoir avoir un apreçu de l'évolution de ses performance le joueur a accès à un tableau des scores. Ce tableau lui donnera accès au score des 10 dernières partie classé du plus récent au plus ancien.
 
-## II°) Fenêtre de jeu:
+![alt texte](https://github.com/Nathan-Carre/projet_snake/blob/main/ressources%20%readme/Tableau_scores.jpeg)
+
+Ce pannel est accessible à partir du menu principal, une fois le pseudo du joueur saisi.
+
+
+## III°) Fenêtre de jeu:
 Dès lors que le joueur a appuyé sur le bouton Jouer dans le menu principal, une nouvelle fenêtre Tkinter contenant un canvas s'ouvre pour que le joueur puisse commencer à jouer. Le serpent commence automatiquement à se déplacer dès que la fenêtre de jeu Tkinter c'est ouverte. Il se déplace d'une manière plus au moins rapide en fonction de la vitesse choisie par le joueur dans le menu principal. 
 
 - Tout d'abord, le serpent commence avec une longueur de deux cases, la tête et la queue, quelque soit le "niveau" choisi au préalable.
 - Pour se déplacer, afin d'éviter les murs et manger la pomme sur le terrain, le joueur doit utiliser les flèches du clavier. Les flèches du haut, du bas, de gauche et de droite déplacent le serpent respectivement en haut, en bas, à gauche et à droite. 
 - Si la tête du serpent venait à percuter son propre corps ou un des murs du terrain, la partie est terminée et le joueur a perdu.
 
-## III°) Menu de fin:
+## IV°) Menu de fin:
 A compléter
+
+
+## V°) Système de navigation :
+
+
+## VI°) Système de sauvegarde :
