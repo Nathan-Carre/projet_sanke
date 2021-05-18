@@ -68,8 +68,14 @@ def deplacement_serpent_auto():
         env_jeu.coords(idSerpent[i], serpent[i])
 
     manger_pomme()
-    percuter()
-    snake.after(delai, deplacement_serpent_auto)
+
+    # Erreur le jeux affiche perdu mais la fonction deplacement_serpent_auto continue d'être appelée en boucle 
+    # perduhahatnul()
+    # snake.after(delai, deplacement_serpent_auto)
+    if percuter():
+        perduhahatnul()
+    else:
+        snake.after(delai, deplacement_serpent_auto)
 
 def deplacement_serpent_up():
     """Modifie la direction du serpent vers le haut sur le canevas"""
@@ -123,14 +129,18 @@ def percuter():
     y_centre = (y_tete + y1_tete)//2
     for mur in murs :
         if mur in env_jeu.find_overlapping(x_centre, y_centre, x_centre, y_centre) : 
-            perduhahatnul()
+            return True
 
     for i in range(1, len(idSerpent)):
         if idSerpent[i] in env_jeu.find_overlapping(x_centre, y_centre, x_centre, y_centre)  :
-            perduhahatnul()
+            
+            return True
+    
+    return False
 
 def perduhahatnul():
     """Termine la partie et affiche un nouveau menu pour choisir si l'on veut: rejouer, revenir au menu ou bien sauvegarder son score."""
+    dirX, dirY = 0,0
     env_jeu.delete("all")
     env_jeu.config(bg="black")
     env_jeu.create_text(WIDTH//2, HEIGHT//3, text="PERDU", fill="red", font=('system', '45'))
