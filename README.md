@@ -16,12 +16,13 @@ Le but de ce projet est de créer un programme fonctionnel pour simuler le jeu "
 A compléter
 
 ## II°) Tableau des scores:
-A chaque fin de partie le score du joeur est sauvegarder à l'aide du système de sauvegarde. Afin de pouvoir avoir un apreçu de l'évolution de ses performance le joueur a accès à un tableau des scores. Ce tableau lui donnera accès au score des 10 dernières partie classé du plus récent au plus ancien.
+À chaque fin de partie le score du joueur est sauvegardé à l'aide du système de sauvegarde. Afin de pouvoir avoir un aperçu de l'évolution de ses performances, le joueur a accès à un tableau des scores. Ce tableau lui donnera accès au score des 10 dernières parties classées du plus récent au plus ancien.
 
-![alt texte](https://github.com/Nathan-Carre/projet_snake/blob/main/ressources%20%readme/Tableau_scores.jpeg)
+![alt texte](https://github.com/Nathan-Carre/projet_snake/blob/main/ressources%20readme/Tableau_scores.JPG)
 
-Ce pannel est accessible à partir du menu principal, une fois le pseudo du joueur saisi.
+Ce panel est accessible à partir du menu principal, une fois le pseudo du joueur saisi. Grâce à ce pseudo, les 10 derniers scores seront récupérés à partir du fichier portant le nom du joueur. Ce fichier contenant les scores du joueur, et est stocké sous le répertoire scores.
 
+![alt texte](https://github.com/Nathan-Carre/projet_snake/blob/main/ressources%20readme/dossier_scores.JPG)
 
 ## III°) Fenêtre de jeu:
 Dès lors que le joueur a appuyé sur le bouton Jouer dans le menu principal, une nouvelle fenêtre Tkinter contenant un canvas s'ouvre pour que le joueur puisse commencer à jouer. Le serpent commence automatiquement à se déplacer dès que la fenêtre de jeu Tkinter c'est ouverte. Il se déplace d'une manière plus au moins rapide en fonction de la vitesse choisie par le joueur dans le menu principal. 
@@ -33,8 +34,29 @@ Dès lors que le joueur a appuyé sur le bouton Jouer dans le menu principal, un
 ## IV°) Menu de fin:
 A compléter
 
-
 ## V°) Système de navigation :
+Dans le but de simplifier la navigation entre les différents panels de notre jeu : 
+- Menu
+- Tableau des scores
+- Jeu
+- Fin de jeu
 
+Nous avons voulu mettre en place un système de navigation, permettant de passer d'un panel à l'autre. Dans cette optique nous avons créé des fonctions permettant de générer chacun des panels, afin de les rendre réutilisables : 
+- getPanMenu
+- getPanScore
+- getPanJeu
+- getPanPerdu
+
+Ses fonctions vont contenir tout le nécessaire au bon fonctionnement de chaque panel: 
+- fonction intermediaire (commande utilisé par les boutons)
+- variable local ...
+
+Une fois les fonctions mise en place, nous avons décidé de mettre en place une petite fonction (switchPan) nous permettant de passer d'un panel à l'autre. Pour cela elle détruit le panel actuel (current pan / variable global) et le remplace par le panel cible passé en paramètre avant de l'activer.
+
+![alt texte](https://github.com/Nathan-Carre/projet_snake/blob/main/ressources%20readme/switchpan.JPG)
 
 ## VI°) Système de sauvegarde :
+Afin de pouvoir historiser les scores du joueur, et lui permettre de visualiser l'évolution de ses performances, nous avons mis en place un système de sauvegarde. Un système assez simple permettant de sauvegarder le score du joueur à chaque fin de partie. Le score, sera écrit dans un fichier portant le nom du joueur dans le répertoire "scores". Dans le cas ou le fichier existerait le score sera ajouté en haut du fichier afin de garder les scores classés du plus récent au plus ancien.
+
+![alt texte](https://github.com/Nathan-Carre/projet_snake/blob/main/ressources%20readme/fichier_score.JPG)
+
