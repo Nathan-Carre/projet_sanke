@@ -300,7 +300,6 @@ def getPanScore():
 
     def importerScore(pseudo):
         """Permet d'importer les scores du joeur(en format ".txt") dans le tableau des scores"""
-        print('importerScore')
         file_path = "./scores/" + pseudo + ".txt"
         scores = []
 
