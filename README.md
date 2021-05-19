@@ -10,7 +10,7 @@ Le but de ce projet est de créer un programme fonctionnel pour simuler le jeu "
 
 - La partie s’arrête lorsque la tête du serpent percute un mur ou percute son propre corps.
 
-### Mode d'emploie :
+### Mode d'emploi :
 Apres avoir lancer le programme l'utilisateur doit 
 
      - Entrer son pseudo.
