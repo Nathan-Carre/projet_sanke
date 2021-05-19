@@ -10,6 +10,22 @@ Le but de ce projet est de créer un programme fonctionnel pour simuler le jeu "
 
 - La partie s’arrête lorsque la tête du serpent percute un mur ou percute son propre corps.
 
+### Mode d'emploie :
+Apres avoir lancer le programme l'utilisateur doit 
+
+  -Entrer son pseudo.
+  -Choisir la vitesse de déplacement du serpent.
+  -Choisir le niveau de jeu. L'utilisateur à ici le choix entre 5 niveaux de jeu, de plus en plus difficiles. 
+  -Pour lancer la partie , l'utilisateur clique sur le bouton "jouer" et le jeu commence .
+  -Le déplacement du serpent est contrôlé par l'utilisateur grâce aux quartes boutons Haut, Bas, Gauche et Droit de son clavier.
+  
+Lorsque le serpent percute un mur ou son propre corps, c'est la fin de la partie . L'utilisateur a le choix entre 
+
+  -Rejouer la partie ( cliquer sur le bouton "rejouer" )
+  -Revenir au menu principal (cliquer sur le bouton "revenir au menu" )
+  -Quitter définitivement le jeu ( cliquer sur le bouton "quitter le jeu" )
+  -L'utilisateur a aussi la possibilité de consulter ses 10 derniers scores dans le menu principal (cliquer sur le bouton "Tableau des scores" ).
+
 
 ## I°) Menu Principal:
 
