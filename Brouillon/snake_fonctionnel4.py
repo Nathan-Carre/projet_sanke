@@ -25,8 +25,6 @@ murs = []
 idSerpent = []
 delai = delaiMoyen
 ###########FONCTIONS DE JEU###########################################################################       
-def quitter():
-    snake.destroy()
 
     
 def decors(nomFichier):
