@@ -11,13 +11,13 @@ Le but de ce projet est de créer un programme fonctionnel pour simuler le jeu "
 - La partie s’arrête lorsque la tête du serpent percute un mur ou percute son propre corps.
 
 ### Mode d'emploi :
-Apres avoir lancer le programme l'utilisateur doit 
+Apres avoir lancé le programme l'utilisateur doit 
 
      - Entrer son pseudo.
   
      - Choisir la vitesse de déplacement du serpent.
   
-     - Choisir le niveau de jeu. L'utilisateur à ici le choix entre 5 niveaux de jeu, de plus en plus difficiles. 
+     - Choisir le niveau de jeu. L'utilisateur a ici le choix entre 5 niveaux de jeu, de plus en plus difficiles. 
   
      - Pour lancer la partie , l'utilisateur clique sur le bouton "jouer" et le jeu commence .
   
@@ -48,7 +48,7 @@ Ce panel est accessible à partir du menu principal, une fois le pseudo du joueu
 ![alt texte](https://github.com/Nathan-Carre/projet_snake/blob/main/ressources%20readme/dossier_scores.JPG)
 
 ## III°) Fenêtre de jeu:
-Dès lors que le joueur a appuyé sur le bouton Jouer dans le menu principal, une nouvelle fenêtre Tkinter contenant un canvas s'ouvre pour que le joueur puisse commencer à jouer. Le serpent commence automatiquement à se déplacer dès que la fenêtre de jeu Tkinter c'est ouverte. Il se déplace d'une manière plus au moins rapide en fonction de la vitesse choisie par le joueur dans le menu principal. 
+Dès lors que le joueur a appuyé sur le bouton Jouer dans le menu principal, une nouvelle fenêtre Tkinter contenant un canvas s'ouvre pour que le joueur puisse commencer à jouer. Le serpent commence automatiquement à se déplacer dès que la fenêtre de jeu Tkinter s'est ouverte. Il se déplace d'une manière plus au moins rapide en fonction de la vitesse choisie par le joueur dans le menu principal. 
 
 - Tout d'abord, le serpent commence avec une longueur de deux cases, la tête et la queue, quelque soit le "niveau" choisi au préalable.
 - Pour se déplacer, afin d'éviter les murs et manger la pomme sur le terrain, le joueur doit utiliser les flèches du clavier. Les flèches du haut, du bas, de gauche et de droite déplacent le serpent respectivement en haut, en bas, à gauche et à droite. 
@@ -71,7 +71,7 @@ Nous avons voulu mettre en place un système de navigation, permettant de passer
 - getPanPerdu
 
 Ses fonctions vont contenir tout le nécessaire au bon fonctionnement de chaque panel: 
-- fonction intermediaire (commande utilisé par les boutons)
+- fonction intermediaire (commande utilisée par les boutons)
 - variable local ...
 
 Une fois les fonctions mise en place, nous avons décidé de mettre en place une petite fonction (switchPan) nous permettant de passer d'un panel à l'autre. Pour cela elle détruit le panel actuel (current pan / variable global) et le remplace par le panel cible passé en paramètre avant de l'activer.
