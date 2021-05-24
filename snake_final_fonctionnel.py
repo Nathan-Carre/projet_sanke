@@ -183,7 +183,7 @@ def getPanMenu():
     """Permet de construire le pannel menu et comprend toute les fontions de gestion des actions"""
     def importerNiveaux():
         """Permet d'importer les différents niveaux(en format ".txt") dans le menu"""
-        listeFichier = os.listdir("niveaux")
+        listeFichier = os.listdir()
         niveaux = []
         for fichier in listeFichier:
             if fichier[0:6] == "niveau":
