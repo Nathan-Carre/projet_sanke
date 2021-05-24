@@ -126,7 +126,6 @@ def manger_pomme():
     score += 1
 
 
-
 def percuter():
     """Prend en compte la percussion de la tête avec un autre item du canvas, puis termine la partie ou non selon les règles données dans les consignes."""
     global serpent
@@ -144,6 +143,7 @@ def percuter():
 
 def quitter(): 
     snake.destroy()
+    
 
 def perduhahatnul():
     """Termine la partie et affiche un nouveau menu pour choisir si l'on veut: rejouer, revenir au menu ou bien sauvegarder son score."""
@@ -181,7 +181,6 @@ def switchPan(pannel):
 
 def getPanMenu():
     """Permet de construire le pannel menu et comprend toute les fontions de gestion des actions"""
-    
     def importerNiveaux():
         """Permet d'importer les différents niveaux(en format ".txt") dans le menu"""
         listeFichier = os.listdir()
@@ -333,7 +332,6 @@ def getPanPerdu():
         decors(currentNiveau)
         deplacement_serpent_auto()
         switchPan(newPanJeu)
-
     panPerdu = tk.Frame(snake, bg="black")
     # Center la grille avec une seul colonne
     panPerdu.columnconfigure(0, weight=1)
@@ -350,7 +348,7 @@ def getPanPerdu():
     panPerdu.pack(fill=tk.BOTH, expand=1)
     return panPerdu
     
-
+    
 def getPanJeu():
     panJeu = tk.Frame(snake)
     return panJeu
@@ -367,7 +365,6 @@ current_pan.pack()
 
 # Canvas contenant le jeu dans un premier temps vide il sera rempli quand le jeu sera initialisé
 env_jeu = tk.Canvas()
-
 
 ############PROGRAMME#######################################################################################
 
