@@ -57,7 +57,7 @@ def decors(nomFichier):
             x += 40
         x = 0
         y += 40
-    serpent = [env_jeu.coords(idSerpent[0]), env_jeu.coords(idSerpent[-1])]
+    serpent = [env_jeu.coords(idSerpent[0]), env_jeu.coords(idSerpent[-1])] #serpent de la forme [(la tête), (le corps lorsque qu'une pomme a été mangé), (la queue)]
     niveau.close()
 
 
