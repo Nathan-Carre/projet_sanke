@@ -10,7 +10,6 @@ dirX = -1
 dirY = 0
 pseudo = ""
 score = 0
-currentNiveau =""
 fonte = ("Kristen ITC","24")
 fonteListe = ("Kristen ITC","16")
 couleurFond = "darkgrey"
@@ -52,6 +51,7 @@ def decors(nomFichier):
     serpent = [env_jeu.coords(idSerpent[0]), env_jeu.coords(idSerpent[-1])]
     niveau.close()
 
+
 def deplacement_serpent_auto():
     """Déplace de manière continue le serpent sur le canevas"""
     global murs, pomme, dirX, dirY, serpent, prochaines_coords, coords_murs, delai
@@ -68,7 +68,10 @@ def deplacement_serpent_auto():
         env_jeu.coords(idSerpent[i], serpent[i])
 
     manger_pomme()
+    percuter()
+    snake.after(delai, deplacement_serpent_auto)
 
+<<<<<<< HEAD:Brouillon/snake_fonctionnel3.py
     # Erreur le jeux affiche perdu mais la fonction deplacement_serpent_auto continue d'être appelée en boucle 
     # perduhahatnul()
     # snake.after(delai, deplacement_serpent_auto)
@@ -77,6 +80,8 @@ def deplacement_serpent_auto():
     else:
         snake.after(delai, deplacement_serpent_auto)
     print(type(serpent[0]))
+=======
+>>>>>>> ead5825bee6f94661d9f303c128114ba8cb744b5:snake_final!!!.py
 
 def deplacement_serpent_up():
     """Modifie la direction du serpent vers le haut sur le canevas"""
@@ -84,23 +89,27 @@ def deplacement_serpent_up():
     if dirX != 0 and dirY != 1:
         dirX, dirY = 0, -1 
 
+
 def deplacement_serpent_down():
     """Modifie la direction du serpent vers la bas sur le canevas"""
     global dirX, dirY
     if dirX != 0 and dirY != -1:
         dirX, dirY = 0, 1
-    
+
+
 def deplacement_serpent_right():
     """Modifie la direction du serpent vers la droite sur le canevas"""
     global dirX, dirY
     if dirX != -1 and dirY != 0:
         dirX, dirY = 1, 0 
-    
+
+
 def deplacement_serpent_left():
     """Modifie la direction du serpent sur le canevas"""
     global dirX, dirY
     if dirX != 1 and dirY != 0:
         dirX, dirY = -1, 0
+
 
 def manger_pomme():
     """Ajout d'une nouvelle pomme et des actions qui en découlent, selon les règles données dans les consignes"""
@@ -122,6 +131,7 @@ def manger_pomme():
         idSerpent.append(env_jeu.create_rectangle(serpent[-1], fill="green"))
         score += 1
 
+
 def percuter():
     """Prend en compte la percussion de la tête avec un autre item du canvas, puis termine la partie ou non selon les règles données dans les consignes."""
     global serpent
@@ -130,28 +140,22 @@ def percuter():
     y_centre = (y_tete + y1_tete)//2
     for mur in murs :
         if mur in env_jeu.find_overlapping(x_centre, y_centre, x_centre, y_centre) : 
-            return True
+            perduhahatnul()
 
     for i in range(1, len(idSerpent)):
         if idSerpent[i] in env_jeu.find_overlapping(x_centre, y_centre, x_centre, y_centre)  :
-            
-            return True
-    
-    return False
+            perduhahatnul()
+
 
 def perduhahatnul():
     """Termine la partie et affiche un nouveau menu pour choisir si l'on veut: rejouer, revenir au menu ou bien sauvegarder son score."""
-    dirX, dirY = 0,0
     env_jeu.delete("all")
     env_jeu.config(bg="black")
     env_jeu.create_text(WIDTH//2, HEIGHT//3, text="PERDU", fill="red", font=('system', '45'))
     env_jeu.create_text(WIDTH//2, HEIGHT//2.25, text="Votre score : "+str(score), fill="white", font=('Lucida Console', '15'))
-    replay=tk.Button(text="Rejouer", fg="white", bg="black", relief="raised", font=("Lucida Console","20") )
-    replay.place(x= WIDTH//2.4,y=HEIGHT//2)
-    backto=tk.Button(text="Revenir au menu", fg="white", bg="black", relief="raised", font=("Lucida Console","20"), command=lambda: switchPan(getPanMenu()) )
-    backto.place(x= WIDTH//3,y=HEIGHT//1.7)
+    env_jeu.create_text(WIDTH//2, HEIGHT//1.75, text="Veuillez quitter le jeu.", fill="white", font=('system', '35'))
     save_score()
-    #rendre les boutons fonctionnels + transformer en pannel cette fonction devrait delete('all') config(bg='black') et appeler switchPan(getPanPerdu())
+
 
 def save_score():
     """Sauvegarde le score du joueur une fois la partie terminée sous /scores/pseudo_du_joueur."""
@@ -160,16 +164,12 @@ def save_score():
     old_scores = ""
 
     if os.path.exists(file_path):
-        # récupérer le contenue du fichier score
         f = open(file_path, "r")
         old_scores = f.read()
         f.close()
     elif not os.path.exists("./scores"):
-        # si le dossier score n'existe pas on le crée
         os.makedirs("./scores")
 
-    # on ajoute le nouveau score en haut du fichier suivi par les anciens
-    # classés du plus récent au plus ancien
     f = open(file_path, "w")
     f.write(str(score) + '\n' + old_scores)
     f.close()
@@ -204,24 +204,23 @@ def getPanMenu():
 
     def jouer():
         """Lance la partie dans une nouvelle fenêtre et suprimme la fenêtre "menu". """
-        global pseudo, env_jeu, score, idSerpent, dirX, dirY, currentNiveau
-        # on recrée le canvas avec un nouveau pannel jeu
+        global pseudo, env_jeu, score, idSerpent
         newPanJeu = getPanJeu()
         env_jeu.destroy()
         env_jeu = tk.Canvas(newPanJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
         env_jeu.pack()
         
         pseudo = etryPseudo.get()
-        currentNiveau = listeNiveaux.get(listeNiveaux.curselection())
-        # on remet les variables à leurs valeurs initiale
+        nomFichier = listeNiveaux.get(listeNiveaux.curselection())
         dirX = -1
         dirY = 0
         score = 0
         idSerpent = []
-        decors(currentNiveau)
+        decors(nomFichier)
         deplacement_serpent_auto()
         switchPan(newPanJeu)
     
+
     def scores():
         """Lance le tableau des scores"""
         global pseudo
@@ -237,6 +236,7 @@ def getPanMenu():
         btRapide.config(bg=couleurBoutonDefaut)
         delai = delaiLent
 
+
     def moyen():
         """Pour de sélectionner dans le menu principale la vitesse (moyenne) du serpent et donc le niveau de difficulté"""
         global delai
@@ -244,6 +244,7 @@ def getPanMenu():
         btMoyen.config(bg=couleurBoutonSelect)
         btRapide.config(bg=couleurBoutonDefaut)
         delai = delaiMoyen
+
 
     def rapide():
         """Pour de sélectionner dans le menu principale la vitesse (rapide) du serpent et donc le niveau de difficulté"""
@@ -297,10 +298,12 @@ def getPanMenu():
 
     return panMenu
 
+
 def getPanScore():
 
     def importerScore(pseudo):
         """Permet d'importer les scores du joeur(en format ".txt") dans le tableau des scores"""
+        print('importerScore')
         file_path = "./scores/" + pseudo + ".txt"
         scores = []
 
@@ -339,28 +342,31 @@ def getPanScore():
     
     return panScore
 
+
 def getPanJeu():
     panJeu = tk.Frame(snake)
     return panJeu
 
-#Adeline devrait transforer la fonction perduhahatnul en pannel 
+
 def getPanPerdu():
     def rejouer():
         """Relance la partie dans une nouvelle fenêtre et suprimme la fenêtre "perdu". """
-        global pseudo, env_jeu, score, idSerpent, currentNiveau, dirX, dirY
+        global pseudo, env_jeu, score, idSerpent
 
-        # on recrée le canvas avec un nouveau pannel jeu
         newPanJeu = getPanJeu()
         env_jeu.destroy()
         env_jeu = tk.Canvas(newPanJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
         env_jeu.pack()
+        
+        pseudo = entryPseudo.get()
+        nomFichier = listeNiveaux.get(listeNiveaux.curselection())
         
         # on remet les variables à leurs valeurs initiale
         dirX = -1
         dirY = 0
         score = 0
         idSerpent = []
-        decors(currentNiveau)
+        decors(nomFichier)
         deplacement_serpent_auto()
         
         switchPan(newPanJeu)
