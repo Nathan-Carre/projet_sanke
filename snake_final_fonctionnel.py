@@ -1,8 +1,8 @@
 import tkinter as tk
 import random
 import os
-
 ################CONSTANTE################################################################
+
 WIDTH = 800
 HEIGHT = 600
 taille_case = 40
@@ -10,28 +10,37 @@ dirX = -1
 dirY = 0
 pseudo = ""
 score = 0
-fonte = ("Kristen ITC","24")
-fonteListe = ("Kristen ITC","16")
+currentNiveau = ""
+fonte = ("Kristen ITC","20")
+fonteListe = ("Kristen ITC","12")
 couleurFond = "darkgrey"
 couleurBoutonSelect = "green"
 couleurBoutonDefaut = "SystemButtonFace"
 delaiLent = 200
 delaiMoyen = 150
 delaiRapide = 100
-###########VARIABLES########################################################################
+
+###########VARIABLES DE JEU########################################################################
+
 pommes = []
 murs = []
-global delai
-global idSerpent 
 idSerpent = []
 delai = delaiMoyen
+
 ###########FONCTIONS DE JEU###########################################################################       
 
 def decors(nomFichier):
     """Génération du décor correspondant au niveau pré-sélectionné dans le menu principal"""
-    global murs, pomme, serpent, idSerpent
+    global murs, pomme, serpent, idSerpent, dirX, dirY
+    # On réinitialise les variables de jeu : 
     serpent = []
+    murs = []
+    pommes = []
+    idSerpent = []
+    dirX = -1
+    dirY = 0
     x, y = 0, 0
+    # On crée le nouveau décor
     niveau = open(nomFichier)
     for ligne in niveau:
         for i in range(len(ligne)):
@@ -48,6 +57,7 @@ def decors(nomFichier):
             x += 40
         x = 0
         y += 40
+    #serpent de la forme [(la tête), (le corps lorsque qu'une pomme a été mangé), (la queue)]
     serpent = [env_jeu.coords(idSerpent[0]), env_jeu.coords(idSerpent[-1])]
     niveau.close()
 
@@ -60,28 +70,17 @@ def deplacement_serpent_auto():
     (serpent[0][2] + dirX * taille_case), (serpent[0][3] + dirY * taille_case)] 
     for i in murs:
         coords_murs.append(env_jeu.coords(i))
-        
     serpent.insert(0, prochaines_coords) 
     serpent.remove(serpent[-1])
-
     for i in range(len(serpent)):
         env_jeu.coords(idSerpent[i], serpent[i])
-
-    manger_pomme()
-    percuter()
-    snake.after(delai, deplacement_serpent_auto)
-
-<<<<<<< HEAD:Brouillon/snake_fonctionnel3.py
-    # Erreur le jeux affiche perdu mais la fonction deplacement_serpent_auto continue d'être appelée en boucle 
-    # perduhahatnul()
-    # snake.after(delai, deplacement_serpent_auto)
+    if serpent[0] == env_jeu.coords(pomme):
+        manger_pomme()
     if percuter():
         perduhahatnul()
     else:
         snake.after(delai, deplacement_serpent_auto)
-    print(type(serpent[0]))
-=======
->>>>>>> ead5825bee6f94661d9f303c128114ba8cb744b5:snake_final!!!.py
+
 
 def deplacement_serpent_up():
     """Modifie la direction du serpent vers le haut sur le canevas"""
@@ -114,22 +113,17 @@ def deplacement_serpent_left():
 def manger_pomme():
     """Ajout d'une nouvelle pomme et des actions qui en découlent, selon les règles données dans les consignes"""
     global pomme, score, serpent, murs, prochaines_coords, dirX, dirY, idSerpent
-    if env_jeu.coords(pomme) == serpent[0]:
-        x_rd = random.randint(1,18)
-        y_rd = random.randint(1,13)
-        x_centre = (x_rd*taille_case + x_rd*taille_case + taille_case)//2 
-        y_centre = (y_rd*taille_case + y_rd*taille_case + taille_case)//2
-        while (idSerpent[0] or idSerpent[-1]) in env_jeu.find_overlapping(x_centre, y_centre,x_centre, y_centre) : 
-            for i in murs :
-                if i in env_jeu.find_overlapping(x_centre, y_centre,x_centre, y_centre) :
-                    x_rd = random.randint(1,18)
-                    y_rd = random.randint(1,13)
-                    x_centre = (x_rd*taille_case + x_rd*taille_case + taille_case)//2 
-                    y_centre = (y_rd*taille_case + y_rd*taille_case + taille_case)//2
-        env_jeu.coords(pomme, x_rd*taille_case, y_rd*taille_case, x_rd*taille_case + taille_case, y_rd*taille_case + taille_case)
-        serpent.append(serpent[-1])
-        idSerpent.append(env_jeu.create_rectangle(serpent[-1], fill="green"))
-        score += 1
+    creer = False
+    while not creer:
+        p1 = 40 * random.randint(1,18)
+        p2 = 40 * random.randint(1, 13)
+        over = env_jeu.find_overlapping(p1, p2, p1 +40, p2 +40)
+        if len(over) == 0:
+            creer = True
+    env_jeu.coords(pomme, p1, p2, p1 + taille_case, p2 + taille_case)
+    serpent.append(serpent[-1])
+    idSerpent.append(env_jeu.create_rectangle(serpent[-1], fill="green"))
+    score += 1
 
 
 def percuter():
@@ -140,21 +134,21 @@ def percuter():
     y_centre = (y_tete + y1_tete)//2
     for mur in murs :
         if mur in env_jeu.find_overlapping(x_centre, y_centre, x_centre, y_centre) : 
-            perduhahatnul()
-
+            return True
     for i in range(1, len(idSerpent)):
         if idSerpent[i] in env_jeu.find_overlapping(x_centre, y_centre, x_centre, y_centre)  :
-            perduhahatnul()
+            return True
+    return False   
 
+
+def quitter(): 
+    snake.destroy()
+    
 
 def perduhahatnul():
     """Termine la partie et affiche un nouveau menu pour choisir si l'on veut: rejouer, revenir au menu ou bien sauvegarder son score."""
-    env_jeu.delete("all")
-    env_jeu.config(bg="black")
-    env_jeu.create_text(WIDTH//2, HEIGHT//3, text="PERDU", fill="red", font=('system', '45'))
-    env_jeu.create_text(WIDTH//2, HEIGHT//2.25, text="Votre score : "+str(score), fill="white", font=('Lucida Console', '15'))
-    env_jeu.create_text(WIDTH//2, HEIGHT//1.75, text="Veuillez quitter le jeu.", fill="white", font=('system', '35'))
     save_score()
+    switchPan(getPanPerdu())
 
 
 def save_score():
@@ -162,19 +156,20 @@ def save_score():
     global pseudo, score
     file_path = "./scores/" + pseudo + ".txt"
     old_scores = ""
-
     if os.path.exists(file_path):
+        # récupérer le contenue du fichier score
         f = open(file_path, "r")
         old_scores = f.read()
         f.close()
     elif not os.path.exists("./scores"):
+        # si le dossier score n'existe pas on le crée
         os.makedirs("./scores")
-
+    # on ajoute le nouveau score en haut du fichier suivi par les anciens
+    # classés du plus récent au plus ancien
     f = open(file_path, "w")
     f.write(str(score) + '\n' + old_scores)
     f.close()
 
-################################################################################################################ 
 ###########FONCTIONS PANNEL###########################################################################      
 
 def switchPan(pannel):
@@ -186,10 +181,9 @@ def switchPan(pannel):
 
 def getPanMenu():
     """Permet de construire le pannel menu et comprend toute les fontions de gestion des actions"""
-
     def importerNiveaux():
         """Permet d'importer les différents niveaux(en format ".txt") dans le menu"""
-        listeFichier = os.listdir()
+        listeFichier = os.listdir("niveaux")
         niveaux = []
         for fichier in listeFichier:
             if fichier[0:6] == "niveau":
@@ -204,23 +198,20 @@ def getPanMenu():
 
     def jouer():
         """Lance la partie dans une nouvelle fenêtre et suprimme la fenêtre "menu". """
-        global pseudo, env_jeu, score, idSerpent
+        global pseudo, env_jeu, score, idSerpent, dirX, dirY, currentNiveau, murs
+        # on recrée le canvas avec un nouveau pannel jeu
         newPanJeu = getPanJeu()
         env_jeu.destroy()
         env_jeu = tk.Canvas(newPanJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
         env_jeu.pack()
-        
         pseudo = etryPseudo.get()
-        nomFichier = listeNiveaux.get(listeNiveaux.curselection())
-        dirX = -1
-        dirY = 0
+        currentNiveau = listeNiveaux.get(listeNiveaux.curselection())
         score = 0
-        idSerpent = []
-        decors(nomFichier)
-        deplacement_serpent_auto()
+        decors(currentNiveau)
         switchPan(newPanJeu)
-    
+        deplacement_serpent_auto()
 
+        
     def scores():
         """Lance le tableau des scores"""
         global pseudo
@@ -253,11 +244,10 @@ def getPanMenu():
         btMoyen.config(bg=couleurBoutonDefaut)
         btRapide.config(bg=couleurBoutonSelect)
         delai = delaiRapide
-    
     global pseudo
-    
     panMenu = tk.Frame(snake,bg=couleurFond)
-    
+    # Center la grille avec plusieurs colonnes
+    panMenu.grid_columnconfigure((0,1,2), weight=1)
     labelPseudo = tk.Label(panMenu,text="Pseudo",font=fonte,bg=couleurFond)
     etryPseudo = tk.Entry(panMenu, width=15, font=fonte)
     etryPseudo.insert(tk.END,pseudo)
@@ -265,14 +255,12 @@ def getPanMenu():
     btLent = tk.Button(panMenu,text="Lent",font=fonte,bg=couleurBoutonDefaut, command=lent)
     btMoyen = tk.Button(panMenu,text="Moyen",font=fonte,bg=couleurBoutonDefaut, command=moyen)
     btRapide = tk.Button(panMenu,text="Rapide",font=fonte,bg=couleurBoutonDefaut, command=rapide)
-
     if(delai == delaiLent):
         btLent.config(bg=couleurBoutonSelect)
     elif(delai == delaiMoyen):
         btMoyen.config(bg=couleurBoutonSelect)
     else :
         btRapide.config(bg=couleurBoutonSelect)
-
     btJouer = tk.Button(panMenu,text="Jouer",font=fonte,command=jouer)
     btScore = tk.Button(panMenu,text="Tableau des scores",font=fonte,command=scores)
     panListe = tk.Frame(panMenu)
@@ -282,7 +270,6 @@ def getPanMenu():
     listeNiveaux.pack(side=tk.LEFT, fill=tk.BOTH)
     barreDefilement.pack(side=tk.RIGHT, fill=tk.BOTH)
     barreDefilement.config(command = listeNiveaux.yview)
-
     labelPseudo.grid(row=0,columnspan=3)
     etryPseudo.grid(row=1,columnspan=3)
     labelVitesse.grid(row=2,columnspan=3)
@@ -293,85 +280,78 @@ def getPanMenu():
     panListe.grid(row=5,columnspan=3)
     btJouer.grid(row=6,columnspan=3)
     btScore.grid(row=7,columnspan=3)
-    
     importerNiveaux()
-
     return panMenu
 
 
 def getPanScore():
-
     def importerScore(pseudo):
         """Permet d'importer les scores du joeur(en format ".txt") dans le tableau des scores"""
-        print('importerScore')
         file_path = "./scores/" + pseudo + ".txt"
         scores = []
-
         if os.path.exists(file_path):
             # récupérer le contenue du fichier score
             f = open(file_path, "r")
             scores = f.read().split('\n')[:10]
             f.close()
-
         for score in scores:
             listeScores.insert(tk.END,str(score) + " pts")
         if len(scores):
             listeScores.select_set(0)
         listeScores.config(height=10)
         return listeScores
-
-
     global pseudo
     panScore = tk.Frame(snake, bg=couleurFond)
-
+    panScore.columnconfigure(0, weight=1)
     panListeScore = tk.Frame(panScore)
-    labelScore = tk.Label(panScore,text=pseudo + " Votre tableau des scores",font=fonte,bg=couleurFond)
+    labelScore = tk.Label(panScore,text=pseudo + " Votre tableau des scores",font=fonte)
     barreDefilementScore = tk.Scrollbar(panListeScore)
     listeScores = tk.Listbox(panListeScore,font=fonte,selectbackground=couleurBoutonSelect,yscrollcommand=barreDefilementScore.set)
     listeScores.pack(side=tk.LEFT, fill=tk.BOTH)
     barreDefilementScore.pack(side=tk.RIGHT, fill=tk.BOTH)
     barreDefilementScore.config(command = listeScores.yview)
-
     btMenu = tk.Button(panScore,text="Retour au Menu",font=fonte,command=lambda: switchPan(getPanMenu()))
-    
     labelScore.grid(row=0,columnspan=3)   
     panListeScore.grid(row=1,columnspan=3)
     btMenu.grid(row=2,columnspan=3)
-
     importerScore(pseudo) 
-    
     return panScore
-
-
-def getPanJeu():
-    panJeu = tk.Frame(snake)
-    return panJeu
 
 
 def getPanPerdu():
     def rejouer():
         """Relance la partie dans une nouvelle fenêtre et suprimme la fenêtre "perdu". """
-        global pseudo, env_jeu, score, idSerpent
-
+        global pseudo, env_jeu, score, currentNiveau
+        # on recrée le canvas avec un nouveau pannel jeu
         newPanJeu = getPanJeu()
         env_jeu.destroy()
         env_jeu = tk.Canvas(newPanJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
         env_jeu.pack()
-        
-        pseudo = entryPseudo.get()
-        nomFichier = listeNiveaux.get(listeNiveaux.curselection())
-        
         # on remet les variables à leurs valeurs initiale
-        dirX = -1
-        dirY = 0
         score = 0
-        idSerpent = []
-        decors(nomFichier)
+        decors(currentNiveau)
         deplacement_serpent_auto()
-        
         switchPan(newPanJeu)
-
-
+    panPerdu = tk.Frame(snake, bg="black")
+    # Center la grille avec une seul colonne
+    panPerdu.columnconfigure(0, weight=1)
+    # Centrer la grille en laissant la line 0 et la ligne 5 prendre tout l'epace restant 
+    panPerdu.grid_rowconfigure((0,5), weight=1)
+    labelPerdu = tk.Label(panPerdu,text="PERDU",font=('system', '45'), fg="red", bg="black")
+    labelScore = tk.Label(panPerdu,text="Votre score : "+str(score),font=('Lucida Console', '15'), fg="white", bg="black")
+    replay=tk.Button(panPerdu, text="Rejouer", fg="white", bg="black", relief="raised", font=("Lucida Console","20"),command=rejouer )
+    backto=tk.Button(panPerdu, text="Revenir au menu", fg="white", bg="black", relief="raised", font=("Lucida Console","20"), command=lambda: switchPan(getPanMenu()) )
+    labelPerdu.grid(row=1, columnspan=1)   
+    labelScore.grid(row=2, pady=10, columnspan=1)
+    replay.grid(row=3,pady=4, columnspan=1)   
+    backto.grid(row=4,pady=4, columnspan=1)
+    panPerdu.pack(fill=tk.BOTH, expand=1)
+    return panPerdu
+    
+    
+def getPanJeu():
+    panJeu = tk.Frame(snake)
+    return panJeu
 
 ################################################################################################################ 
 
@@ -379,14 +359,12 @@ snake = tk.Tk()
 snake.configure(bg=couleurFond)
 snake.title("Snake")
 snake.geometry(str(WIDTH)+"x"+str(HEIGHT))
-
 panMenu = getPanMenu()
 current_pan = panMenu
 current_pan.pack()
 
-panJeu = getPanJeu()
-env_jeu = tk.Canvas(panJeu, width=WIDTH, heigh=HEIGHT, bg=couleurFond)
-env_jeu.pack()
+# Canvas contenant le jeu dans un premier temps vide il sera rempli quand le jeu sera initialisé
+env_jeu = tk.Canvas()
 
 ############PROGRAMME#######################################################################################
 
