@@ -11,7 +11,7 @@ Le but de ce projet est de créer un programme fonctionnel pour simuler le jeu "
 - La partie s’arrête lorsque la tête du serpent percute un mur ou percute son propre corps.
 
 ### Mode d'emploi :
-Apres avoir lancé le programme l'utilisateur doit 
+Apres avoir lancé le programme ("snake_final_fonctionnel.py") l'utilisateur doit 
 
      - Entrer son pseudo.
   
