@@ -29,7 +29,7 @@ Lorsque le serpent percute un mur ou son propre corps, c'est la fin de la partie
   
      - Revenir au menu principal (cliquer sur le bouton "revenir au menu" )
   
-     - Quitter définitivement le jeu ( cliquer sur le bouton "quitter le jeu" )
+     - Quitter définitivement le jeu ( fermer la fenêtre tkinter )
   
      - L'utilisateur a aussi la possibilité de consulter ses 10 derniers scores dans le menu principal (cliquer sur le bouton "Tableau des scores" ).
 
@@ -55,7 +55,7 @@ Dès lors que le joueur a appuyé sur le bouton Jouer dans le menu principal, un
 - Si la tête du serpent venait à percuter son propre corps ou un des murs du terrain, la partie est terminée et le joueur a perdu.
 
 ## IV°) Menu de fin:
-Lorsque vous avez perdu, vous accédez à un menu de fin, où vous pourrez visualiser le score effectué lors de votre partie. Vous aurez également 3 boutons vous permettant soit de rejouer, de revenir au menu, ou de quitter le jeu, tout cela fonctionnel grâce au système de navigation.
+Lorsque vous avez perdu, vous accédez à un menu de fin, où vous pourrez visualiser le score effectué lors de votre partie. Vous aurez également 2 boutons vous permettant soit de rejouer, de revenir au menu, tout cela fonctionnel grâce au système de navigation.
 
 ## V°) Système de navigation :
 Dans le but de simplifier la navigation entre les différents panels de notre jeu : 
