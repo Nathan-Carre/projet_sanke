@@ -76,6 +76,7 @@ def deplacement_serpent_auto():
         perduhahatnul()
     else:
         snake.after(delai, deplacement_serpent_auto)
+    print(type(serpent[0]))
 
 def deplacement_serpent_up():
     """Modifie la direction du serpent vers le haut sur le canevas"""

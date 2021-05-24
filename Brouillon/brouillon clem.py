@@ -19,6 +19,10 @@ couleurBoutonDefaut = "SystemButtonFace"
 delaiLent = 200
 delaiMoyen = 150
 delaiRapide = 100
+
+global teteBas, tetehaut, teteGauche, teteDroite, corpsBas, corpshaut, corpsGauche, corpsDroite, queueBas, queueHaut, queueGauche, queueDroite, tournantBasDroit, tournantBasGauche, tournantDroitHaut, tournantGaucheHaut, muraille, imgPomme
+
+
 ###########VARIABLES########################################################################
 pommes = []
 murs = []
@@ -29,12 +33,34 @@ delai = 100
 ###########FONCTIONS###########################################################################     
 
 
+def definirImages():
+    global teteBas, tetehaut, teteGauche, teteDroite, corpsBas, corpshaut, corpsGauche, corpsDroite, queueBas, queueHaut, queueGauche, queueDroite, tournantBasDroit, tournantBasGauche, tournantDroitHaut, tournantGaucheHaut, muraille, imgPomme
+    teteBas = tk.PhotoImage(file=r'images\tete_bas.gif')
+    tetehaut = tk.PhotoImage(file=r'images\tete_haut.gif')
+    teteGauche = tk.PhotoImage(file=r'images\tete_gauche.gif')
+    teteDroite = tk.PhotoImage(file=r'images\tete_droit.gif')
+    corpsBas = tk.PhotoImage(file=r'images\corps_bas.gif')
+    corpshaut = tk.PhotoImage(file=r'images\corps_haut.gif')
+    corpsGauche = tk.PhotoImage(file=r'images\corps_gauche.gif')
+    corpsDroite = tk.PhotoImage(file=r'images\corps_droit.gif')
+    queueBas = tk.PhotoImage(file=r'images\queue_bas.gif')
+    queueHaut = tk.PhotoImage(file=r'images\queue_haut.gif')
+    queueGauche = tk.PhotoImage(file=r'images\queue_gauche.gif')
+    queueDroite = tk.PhotoImage(file=r'images\queue_droit.gif')
+    tournantBasDroit = tk.PhotoImage(file=r'images\tournant_bas_droit.gif')
+    tournantBasGauche = tk.PhotoImage(file=r'images\tournant_bas_gauche.gif')
+    tournantDroitHaut = tk.PhotoImage(file=r'images\tournant_droit_haut.gif')
+    tournantGaucheHaut = tk.PhotoImage(file=r'images\tournant_gauche_haut.gif')
+    muraille = tk.PhotoImage(file=r'images\muraille.gif')
+    imgPomme = tk.PhotoImage(file=r'images\pomme.gif')
+
+
 def afficherImages():
     #x, y, x2, y2 = serpent[0], serpent[1], serpent[2], serpent[3]
-    teteGauche = tk.PhotoImage(file='assets/tete_serpent_bas_40.gif')
-    env_jeu.create_image(300,300,image=teteGauche)
-    print
-    #if serpent[0][0] < serpent[1][0]:
+    
+    #env_jeu.create_image(300,300,image=teteGauche)
+    if serpent[0][0] < serpent[1][0]:
+        print("tête vers la gauche")
 
 
 
@@ -55,7 +81,7 @@ def importerNiveaux():
 
 def importerScore(pseudo):
     """Permet d'importer les scores du joeur(en format ".txt") dans le tableau des scores"""
-    print('importerScore')
+    #print('importerScore')
     file_path = "./scores/" + pseudo + ".txt"
     scores = []
 
@@ -139,7 +165,7 @@ def scores():
 
 def decors(nomFichier):
     """Génération du décor correspondant au niveau pré-sélectionné dans le menu principal"""
-    global murs, pomme, serpent, idSerpent
+    global murs, pomme, serpent, idSerpent, teteGauche
     serpent = []
     x, y = 0, 0
     niveau = open(nomFichier)
@@ -152,13 +178,16 @@ def decors(nomFichier):
             elif case == "P":
                 pomme = env_jeu.create_oval(x, y, x+40, y+40, fill='red')
             elif case == "T":
-                idSerpent.append(env_jeu.create_rectangle(x, y, x+40, y+40, fill='green'))
+                idSerpent.append(env_jeu.create_image(x, y, image=teteGauche))
+                serpent.insert(0,[x,y,x+40,y+40])
             elif case == "Q":
                 idSerpent.append(env_jeu.create_rectangle(x, y, x+40, y+40, fill='green'))
+                serpent.append([x,y,x+40,y+40])
             x += 40
         x = 0
         y += 40
-    serpent = [env_jeu.coords(idSerpent[0]), env_jeu.coords(idSerpent[-1])]
+    print(serpent)
+    #serpent = [env_jeu.coords(idSerpent[0]), env_jeu.coords(idSerpent[-1])]
     niveau.close()
 
 def deplacement_serpent_auto():
@@ -174,12 +203,15 @@ def deplacement_serpent_auto():
     serpent.remove(serpent[-1])
 
     for i in range(len(serpent)):
-        env_jeu.coords(idSerpent[i], serpent[i])
+        env_jeu.coords(idSerpent[i], serpent[i][0], serpent[i][1])
 
-    afficherImages()
 
     manger_pomme()
     percuter()
+
+    #afficherImages()
+    print(serpent)
+
     snake.after(delai, deplacement_serpent_auto)
 
 def deplacement_serpent_up():
@@ -187,7 +219,6 @@ def deplacement_serpent_up():
     global dirX, dirY
     dirX, dirY = 0, -1 
     teteGauche = tk.PhotoImage(file='assets/tete_serpent_bas_40.gif')
-    env_jeu.create_image(300,300,image=teteGauche)
 
 def deplacement_serpent_down():
     """Modifie la direction du serpent vers la bas sur le canevas"""
@@ -263,6 +294,7 @@ panMenu = tk.Frame(snake,bg=couleurFond)
 panScore = tk.Frame(snake)
 panJeu = tk.Frame(snake)
 
+definirImages()
 
 labelPseudo = tk.Label(panMenu,text="Pseudo",font=fonte,bg=couleurFond)
 etryPseudo = tk.Entry(panMenu, width=15, font=fonte)
@@ -328,5 +360,6 @@ snake.bind('<Up>', lambda e:deplacement_serpent_up())
 snake.bind('<Down>', lambda e:deplacement_serpent_down())
 snake.bind('<Right>', lambda e:deplacement_serpent_right())
 snake.bind('<Left>', lambda e:deplacement_serpent_left())
+
 
 snake.mainloop()
