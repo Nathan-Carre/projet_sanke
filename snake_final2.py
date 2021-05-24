@@ -11,8 +11,8 @@ dirY = 0
 pseudo = ""
 score = 0
 currentNiveau = ""
-fonte = ("Kristen ITC","24")
-fonteListe = ("Kristen ITC","16")
+fonte = ("Kristen ITC","20")
+fonteListe = ("Kristen ITC","12")
 couleurFond = "darkgrey"
 couleurBoutonSelect = "green"
 couleurBoutonDefaut = "SystemButtonFace"
@@ -185,7 +185,7 @@ def getPanMenu():
     """Permet de construire le pannel menu et comprend toute les fontions de gestion des actions"""
     def importerNiveaux():
         """Permet d'importer les différents niveaux(en format ".txt") dans le menu"""
-        listeFichier = os.listdir()
+        listeFichier = os.listdir("niveaux")
         niveaux = []
         for fichier in listeFichier:
             if fichier[0:6] == "niveau":
