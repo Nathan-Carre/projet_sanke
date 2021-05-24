@@ -36,7 +36,10 @@ Lorsque le serpent percute un mur ou son propre corps, c'est la fin de la partie
 
 ## I°) Menu Principal:
 
-A compléter
+Le joueur est invité à choisir un pseudo qui sera enregistré avec son score (facultatif).
+Il doit aussi choisir la vitesse du serpent entre lent, moyen et rapide (par défaut, moyen), ainsi que le niveaux dans lequel il veut jouer, qui est par défaut le premier fichier de la liste.
+
+Le bouton "tableau des scores" permet de consulter les scores réalisés, avec ou sans pseudo.
 
 ## II°) Tableau des scores:
 À chaque fin de partie le score du joueur est sauvegardé à l'aide du système de sauvegarde. Afin de pouvoir avoir un aperçu de l'évolution de ses performances, le joueur a accès à un tableau des scores. Ce tableau lui donnera accès au score des 10 dernières parties classées du plus récent au plus ancien.
